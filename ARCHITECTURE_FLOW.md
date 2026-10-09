@@ -141,15 +141,18 @@ class TicketState(TypedDict):
 
 ---
 
-### Node 3A: Billing Specialist Agent (`billing_agent`)
+### Node 3A: E-Commerce Orders & Billing Specialist Agent (`billing_agent`)
 1. **Input:** `state["clean_message"]`, `state["customer_id"]`
-2. **Tool Execution (`billing_tools.py`):**
-   - Queries relational database (`orders`, `order_items`, `refunds`).
-   - Extracts order details, fulfillment status, and delivery timestamps.
-3. **Code-Enforced Financial Limit:**
-   - If user requests a refund for order $\le ₹500$ $\longrightarrow$ Auto-generates approved refund record.
-   - If user requests a refund for order $> ₹500$ $\longrightarrow$ Creates pending supervisor approval and escalates.
-4. **Draft Synthesis:** Formulates structured billing explanation and routes to **`critic`**.
+2. **E-Commerce Lifecycle Tool Operations (`billing_tools.py`):**
+   - Queries SQL database for registered orders, items, payment methods (`UPI`/`Card`), delivery timestamps, courier tracking numbers, and return window eligibility.
+   - **Pre-Dispatch Cancellation:** If an order is in `placed` or `processing` status, `cancel_order()` sets order status to `cancelled`, captures payment state, and issues an instant 100% automated refund.
+   - **In-Transit Protection:** If status is `shipped` or `out_for_delivery`, informs customer the parcel is with the courier partner (`BlueDart`/`Delhivery`), providing real-time checkpoint data and doorstep rejection / return guidance.
+   - **Post-Delivery 7-Day Returns:** If status is `delivered` within 7 days, `request_return_and_refund()` captures return reason category (`defective_hardware`, `damaged`, `wrong_item`), schedules courier pickup, and triggers refund execution upon pickup.
+   - **7-Day Return Window Expiry:** If beyond 7 days, directs the customer to 1-Year Brand Warranty and technical support.
+3. **Financial Limit Guardrail (Code-Enforced):**
+   - Refunds $\le ₹500$ $\longrightarrow$ Auto-approved and issued with confirmation ID.
+   - Refunds $> ₹500$ $\longrightarrow$ Status set to `pending_approval` and escalated for supervisor review.
+4. **Draft Synthesis:** Formulates conversational, highly structured e-commerce response using `openai.gpt-4o` and routes to **`critic`**.
 
 ---
 
