@@ -9,6 +9,7 @@
 - 📘 [**Project Overview & Problems Solved**](PROJECT_OVERVIEW.md) — What is Support Copilot, why multi-agent, personas, and tech stack.
 - 🔀 [**Architecture & Execution Flow**](ARCHITECTURE_FLOW.md) — Step-by-step routing flow from user message to specialist agents, RAG, critic loop, and escalation.
 - ⚡ [**Features & Superpowers**](FEATURES_AND_SUPERPOWERS.md) — PII guardrails, ₹500 financial safety limit, 0% hallucination critic, and live trace UI.
+- 👥 [**Roles, Responsibilities & Login Guide**](ROLES_AND_LOGIN_GUIDE.md) — Customer, Support Agent, and Admin roles, permissions, workflows, and credentials.
 - 🎯 [**Resume & Technical Interview Guide**](INTERVIEW_RESUME_GUIDE.md) — 1-minute elevator pitch, resume bullets, and technical Q&As.
 - 📋 [**Backend System Design Specification**](plan.md) — Full technical architecture and schema reference.
 - 🎨 [**Frontend UI/UX Specification**](Frontendplan.md) — Calm console design tokens, components, and state management.
