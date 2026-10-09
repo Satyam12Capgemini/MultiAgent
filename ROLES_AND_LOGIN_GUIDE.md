@@ -94,17 +94,39 @@ The **Administrator** manages system configuration, knowledge bases, evaluation 
 
 ---
 
-## 3. Demo Login Credentials
+## 3. Login Credentials & Dynamic Customer Registration
 
-Support Copilot includes pre-seeded demo accounts for each role:
+Support Copilot combines fixed administrator/specialist accounts with **dynamic self-service registration for unlimited customers**:
 
-| Role | Email Address | Password | Default Redirect Page |
-|---|---|---|---|
-| **👤 Customer** | `aditya.sharma@example.com` | `Password@123` | `/chat` |
-| **🛡️ Support Agent** | `agent@example.com` | `Password@123` | `/agent/escalations` |
-| **⚙️ System Admin** | `admin@example.com` | `Password@123` | `/admin/analytics` |
+### A. Fixed Administrative Accounts (Pre-Seeded)
+The Agent and Admin roles are fixed system operators:
 
-> **Tip:** On the login page (`http://localhost:4200/login`), you can click the quick-login buttons (**Customer**, **Agent**, **Admin**) to auto-fill credentials and sign in with a single click.
+| Role | Email Address | Password | Default Redirect Page | Role Description |
+|---|---|---|---|---|
+| **🛡️ Support Agent** | `agent@example.com` | `Password@123` | `/agent/escalations` | Frontline human specialist queue |
+| **⚙️ System Admin** | `admin@example.com` | `Password@123` | `/admin/analytics` | Full system administrator & manager |
+
+---
+
+### B. Dynamic Customer Accounts (Unlimited Scale & Sign Up)
+Customers are **NOT hardcoded**. The system supports thousands of distinct customers via dynamic JWT registration:
+
+1. **Self-Service Registration:**
+   - Any new customer can open `http://localhost:4200/login`, click the **`New Customer Sign Up`** tab, enter their Name, Email, and Password, and instantly create an account.
+   - Triggers `POST /api/v1/auth/register`, which auto-generates a unique `customer_id` (e.g. `cust-a1b2c3d4`), hashes the password using bcrypt, and issues a signed JWT token.
+2. **Strict Customer Data Isolation:**
+   - Every ticket created by Customer A is tagged with `customer_id = 'cust-A'`.
+   - When Customer A accesses `/tickets` or `/tickets/:id`, the API enforces `where(Ticket.customer_id == user.customer_id)`.
+   - Customer A **cannot view, list, or tamper with** Customer B's tickets (cross-customer queries return a `404 Not Found`).
+   - Support Agents and System Admins have elevated privileges to view tickets across all customers.
+
+---
+
+### C. Quick Demo Login Buttons
+On the login screen (`http://localhost:4200/login`), quick-fill buttons are provided for instant testing:
+- **`Customer` Button:** Auto-fills pre-seeded customer `aditya.sharma@example.com` / `Password@123`.
+- **`Agent` Button:** Auto-fills `agent@example.com` / `Password@123`.
+- **`Admin` Button:** Auto-fills `admin@example.com` / `Password@123`.
 
 ---
 
