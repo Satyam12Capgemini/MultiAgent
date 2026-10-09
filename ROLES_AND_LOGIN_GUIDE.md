@@ -47,11 +47,12 @@ Support Copilot provides three dedicated portals tailored to distinct operationa
 
 ---
 
-## 2. Role Breakdown & Detailed Responsibilities
-
 ### 👤 Customer
 The **Customer** is the end-user seeking technical support, billing inquiries, or general policy information:
-- **Natural Language Interaction:** Ask questions without needing specialized keywords or forms.
+- **Dynamic Registration & Account Isolation:** Any user can sign up with their own name, email, and password. Data is strictly partitioned using `customer_id`.
+- **Pre-loaded Dynamic Order History:** Upon registration, 5 diverse, realistic sample orders (with varied statuses like *Delivered*, *Shipped*, *Out for Delivery*, *Processing*, and various product types) are seeded into the customer's account.
+- **Interactive "📦 My Orders" Drawer & Chips:** Customers can view all their order numbers, statuses, items, and amounts in a collapsible drawer or quick cards with 1-click inquiry chips (e.g. 🔍 *Track*, 💳 *Refund*).
+- **Intelligent LLM Inquiries:** Natural questions (e.g. *"What is the progress of my order?"*) are processed by the LLM (`openai.gpt-4o`) using real SQL database records to provide personalized, accurate, and conversational updates.
 - **Transparent Citations:** See exact document sources `[1]`, `[2]` for every factual claim.
 - **Trace Visibility:** View high-level progress indicators (e.g. *"Running guardrails"*, *"Fact-checking with critic"*).
 - **Feedback Loop:** Rate answers as helpful (👍) or unhelpful (👎) to train future retrieval scoring.
