@@ -1,0 +1,549 @@
+# AgentCommerce Enterprise UI/UX Design System & Component-by-Component Specification Audit
+
+> **System Standard**: Microsoft Copilot, Claude 3.5 Sonnet, Perplexity Pro, and Notion AI Design Architecture.  
+> **Target Framework**: Angular 19+ (Standalone Components, Signals, Modern CSS3 Tokens).  
+> **Design Theme**: Dark Obsidian Glassmorphism (`#070a12`), Radiant AI Indigo/Violet Accents (`#6366f1` / `#8b5cf6`), Emerald HITL Verification (`#10b981`).
+
+---
+
+## 📑 Table of Contents
+1. [Global Design System Foundations & Tokens (`styles.css`)](#1-global-design-system-foundations--tokens)
+2. [Application Shell & Sub-Navigation (`app.html` / `app.css`)](#2-application-shell--sub-navigation)
+3. [Global Top Navigation Bar (`NavbarComponent`)](#3-global-top-navigation-bar)
+4. [Storefront & Product Catalog (`ProductCatalogComponent`)](#4-storefront--product-catalog)
+5. [AI Shopping Copilot Multi-Agent Chat Panel (`CopilotComponent`)](#5-ai-shopping-copilot-multi-agent-chat-panel)
+6. [Shopping Cart Drawer (`CartDrawerComponent`)](#6-shopping-cart-drawer)
+7. [Orders & Real-Time Tracking Timeline (`OrderHistoryComponent`)](#7-orders--real-time-tracking-timeline)
+8. [JWT Authentication Modal (`AuthModalComponent`)](#8-jwt-authentication-modal)
+9. [Product Detail & Specification Modal (`ProductDetailModalComponent`)](#9-product-detail--specification-modal)
+10. [Product Comparison Dock & Matrix (`ProductCompareComponent`)](#10-product-comparison-dock--matrix)
+11. [Design Token Reference Matrix & Typography Cheatsheet](#11-design-token-reference-matrix)
+
+---
+
+## 1. Global Design System Foundations & Tokens
+
+File: [`src/styles.css`](file:///c:/Users/skuma679/l0l3/E-commerce/frontend/src/styles.css)
+
+### 1.1 Typography Families
+* **Primary Sans-Serif**: `'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`  
+  * Weights loaded: `300 (Light)`, `400 (Regular)`, `500 (Medium)`, `600 (Semi-Bold)`, `700 (Bold)`, `800 (Extra-Bold)`
+* **Code / Technical Monospace**: `'JetBrains Mono', monospace`  
+  * Weights loaded: `400 (Regular)`, `500 (Medium)`, `600 (Semi-Bold)`  
+  * Used for: Agent trace logs, carrier tracking codes, promo codes, spec keys.
+
+### 1.2 Surface & Canvas Color Tokens
+| CSS Token | Hex / RGBA Value | Role / Usage |
+| :--- | :--- | :--- |
+| `--canvas-bg` | `#070a12` | Deep Obsidian base canvas background |
+| `--surface-primary` | `#0f172a` | Deep Slate base for inner containers, table backgrounds, inputs |
+| `--surface-secondary` | `#131c33` | Sub-surface for elevated sections |
+| `--surface-elevated` | `#1e293b` | Slate-800 for cards, sidebars, headers, modal surfaces |
+| `--surface-hover` | `#26334d` | Interactive hover state for elevated surfaces |
+| `--surface-glass` | `rgba(15, 23, 42, 0.75)` | Frosted glass backdrops with `backdrop-filter: blur(12px)` |
+
+### 1.3 Canvas Ambient Gradient Lighting
+```css
+body {
+  background-color: var(--canvas-bg);
+  background-image: 
+    radial-gradient(at 10% 10%, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
+    radial-gradient(at 90% 90%, rgba(139, 92, 246, 0.06) 0px, transparent 50%);
+  background-attachment: fixed;
+}
+```
+
+### 1.4 Typography Colors
+* `--text-primary`: `#f8fafc` (High contrast pure white/slate-50 for headings and primary copy)
+* `--text-secondary`: `#94a3b8` (Slate-400 for descriptions, secondary metadata, captions)
+* `--text-tertiary`: `#64748b` (Slate-500 for subtle timestamps, helper labels)
+* `--text-accent`: `#a5b4fc` (Indigo-200 for AI highlights, active labels, link accents)
+
+### 1.5 Brand & AI Gradient Palette
+* `--ai-primary`: `#6366f1` (Indigo-500 - Brand Hero Accent)
+* `--ai-primary-hover`: `#4f46e5` (Indigo-600)
+* `--ai-secondary`: `#8b5cf6` (Purple-500)
+* `--ai-gradient`: `linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%)`
+* `--ai-gradient-glow`: `linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(139, 92, 246, 0.25) 100%)`
+* `--ai-cyan`: `#06b6d4` (Cyan-500 - Telemetry & Diagnostic Agent)
+* `--ai-amber`: `#f59e0b` (Amber-500 - Order Tracking & HITL Propose)
+* `--ai-emerald`: `#10b981` (Emerald-500 - Grounding Critic & HITL Payment)
+* `--ai-rose`: `#f43f5e` (Rose-500 - Deal Hunter & Cancellation)
+
+### 1.6 Border & Divider System
+* `--border-subtle`: `rgba(255, 255, 255, 0.07)` (Card dividers, inactive borders)
+* `--border-medium`: `rgba(255, 255, 255, 0.12)` (Component boundaries, inputs)
+* `--border-bright`: `rgba(255, 255, 255, 0.22)` (Hover borders)
+* `--border-accent`: `rgba(99, 102, 241, 0.40)` (Active AI focus borders)
+
+### 1.7 Elevation & Box Shadows
+* `--shadow-subtle`: `0 1px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)`
+* `--shadow-card`: `0 12px 28px -6px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08)`
+* `--shadow-modal`: `0 24px 60px -12px rgba(0, 0, 0, 0.8), 0 0 1px 1px rgba(255, 255, 255, 0.12)`
+* `--shadow-glow`: `0 0 35px -5px rgba(99, 102, 241, 0.35)`
+* `--shadow-hitl`: `0 0 30px -5px rgba(16, 185, 129, 0.35)`
+
+### 1.8 Corner Radii
+* `--radius-sm`: `6px` (Badges, small buttons, tags)
+* `--radius-md`: `10px` (Inputs, sub-cards, pills)
+* `--radius-lg`: `16px` (Product cards, copilot panel, modal cards)
+* `--radius-xl`: `22px` (Hero containers, large surfaces)
+* `--radius-pill`: `9999px` (Pill buttons, category chips, status badges)
+
+---
+
+## 2. Application Shell & Sub-Navigation
+
+Files: [`src/app/app.html`](file:///c:/Users/skuma679/l0l3/E-commerce/frontend/src/app/app.html), [`src/app/app.css`](file:///c:/Users/skuma679/l0l3/E-commerce/frontend/src/app/app.css)
+
+### 2.1 Architecture
+The application shell hosts the sticky top navigation bar, the sub-navigation pill switcher, the dynamic viewports, and three persistent global overlays (Cart Drawer, AI Copilot, JWT Auth Modal).
+
+### 2.2 Component Element Specs
+| Element Class | Purpose | CSS Properties | Exact Values |
+| :--- | :--- | :--- | :--- |
+| `.app-container` | Root Shell | `min-height`, `display`, `flex-direction` | `100vh`, `flex`, `column` |
+| `.sub-nav-bar` | Sub-Header Nav Ribbon | `background`, `border-bottom`, `padding`, `display`, `justify-content` | `rgba(15, 23, 42, 0.70)`, `1px solid rgba(255, 255, 255, 0.06)`, `0.6rem 2rem` (9.6px 32px), `flex`, `center` |
+| `.tab-pill-container` | Floating Pill Capsule | `background`, `border-radius`, `border`, `padding`, `gap` | `#0f172a`, `9999px`, `1px solid rgba(255, 255, 255, 0.08)`, `0.25rem` (4px), `0.25rem` |
+| `.tab-pill` | Inactive Tab Button | `font-size`, `font-weight`, `color`, `padding`, `border-radius`, `transition` | `0.85rem` (13.6px), `600`, `#94a3b8`, `0.5rem 1.25rem` (8px 20px), `9999px`, `all 0.2s` |
+| `.tab-pill:hover` | Tab Hover State | `color` | `#ffffff` |
+| `.tab-pill.active` | Active Tab Pill | `background`, `color`, `box-shadow` | `#6366f1`, `#ffffff`, `0 2px 10px rgba(99, 102, 241, 0.40)` |
+| `.main-content` | Main View Container | `flex`, `padding-bottom` | `1`, `3rem` (48px) |
+
+---
+
+## 3. Global Top Navigation Bar
+
+Component: `NavbarComponent`  
+Files: [`src/app/components/navbar/navbar.component.html`](file:///c:/Users/skuma679/l0l3/E-commerce/frontend/src/app/components/navbar/navbar.component.html), [`src/app/components/navbar/navbar.component.css`](file:///c:/Users/skuma679/l0l3/E-commerce/frontend/src/app/components/navbar/navbar.component.css)
+
+### 3.1 Layout & Visual Styling
+* **Container**: Sticky at top (`position: sticky; top: 0; z-index: 1000`).
+* **Glass Surface**: `background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding: 0.75rem 2rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);`.
+
+### 3.2 Elements & Typography Specifications
+* **Brand Logo**:
+  * Dimensions: `40px x 40px`
+  * Background: `linear-gradient(135deg, #6366f1, #a855f7, #ec4899)`
+  * Border-radius: `10px`
+  * Font-size: `1.4rem` (Robot icon 🤖)
+  * Box-shadow: `0 0 15px rgba(99, 102, 241, 0.5)`
+* **Brand Name**:
+  * Typography: `font-size: 1.25rem (20px); font-weight: 700; letter-spacing: -0.5px;`
+  * Gradient fill: `linear-gradient(90deg, #ffffff, #cbd5e1); -webkit-background-clip: text; -webkit-text-fill-color: transparent;`
+* **Brand Badge**:
+  * Typography: `font-size: 0.65rem (10.4px); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #818cf8;`
+* **Standard Nav Pill Button (`.nav-btn`)**:
+  * Typography: `font-size: 0.9rem (14.4px); font-weight: 500; color: #f8fafc;`
+  * Surface: `background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 9999px; padding: 0.6rem 1.2rem;`
+  * Hover: `background: rgba(51, 65, 85, 0.9); transform: translateY(-1px); border-color: rgba(255, 255, 255, 0.25);`
+* **AI Copilot Toggle Button (`.copilot-toggle-btn`)**:
+  * Gradient: `linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(168, 85, 247, 0.25))`
+  * Border: `1px solid rgba(168, 85, 247, 0.40)`
+  * Text color: `#e0e7ff`
+  * Active/Hover state: `linear-gradient(135deg, rgba(99, 102, 241, 0.40), rgba(168, 85, 247, 0.40)); border-color: #a855f7; box-shadow: 0 0 15px rgba(168, 85, 247, 0.35);`
+* **Copilot Pulse Status Dot (`.copilot-status-dot`)**:
+  * Dimensions: `8px x 8px` circular dot
+  * Color: `#10b981` with `box-shadow: 0 0 8px #10b981;`
+  * Animation: `@keyframes pulse 2s infinite` (`scale(0.95)` to `scale(1.15)`)
+* **Shopping Cart Badge (`.cart-badge`)**:
+  * Typography: `font-size: 0.75rem (12px); font-weight: 700; color: #ffffff;`
+  * Background: `#ec4899` (Pink/Magenta)
+  * Shape: `border-radius: 9999px; padding: 0.15rem 0.45rem;`
+* **User Session Pill (`.user-pill`)**:
+  * Container: `background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 9999px; padding: 0.4rem 0.8rem;`
+  * User Avatar: `30px x 30px`, `background: linear-gradient(135deg, #3b82f6, #06b6d4)`, `font-size: 0.85rem; font-weight: 700;`
+  * User Name: `font-size: 0.8rem (12.8px); font-weight: 600; color: #f1f5f9;`
+  * User Role: `font-size: 0.65rem (10.4px); color: #94a3b8; text-transform: capitalize;`
+  * Logout Button: `font-size: 0.9rem; opacity: 0.7; hover transform: scale(1.15);`
+* **Auth Action CTA Buttons (`.auth-action-buttons`)**:
+  * Login Button: `background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255, 255, 255, 0.15);`
+  * Sign Up Button: `background: linear-gradient(135deg, #2563eb, #1d4ed8); border: 1px solid #3b82f6; box-shadow: 0 0 12px rgba(37, 99, 235, 0.3);`
+
+---
+
+## 4. Storefront & Product Catalog
+
+Component: `ProductCatalogComponent`  
+Files: [`src/app/components/product-catalog/product-catalog.component.html`](file:///c:/Users/skuma679/l0l3/E-commerce/frontend/src/app/components/product-catalog/product-catalog.component.html), [`src/app/components/product-catalog/product-catalog.component.css`](file:///c:/Users/skuma679/l0l3/E-commerce/frontend/src/app/components/product-catalog/product-catalog.component.css)
+
+### 4.1 Layout Architecture
+* Max Container Width: `1400px` centered with `padding: 1.5rem;`.
+* 2-Column Responsive Grid: `grid-template-columns: 280px 1fr; gap: 2rem;` (Collapses to `1fr` on screens `<= 900px`).
+
+### 4.2 Hero Banner Specs
+* Container: `background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2)), #1e293b; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); padding: 2.5rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);`
+* Badge: `background: rgba(99, 102, 241, 0.3); color: #a5b4fc; font-size: 0.75rem (12px); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; border-radius: 9999px; padding: 0.3rem 0.8rem;`
+* Title H1: `font-size: 2.2rem (35.2px); font-weight: 800; color: #ffffff; letter-spacing: -0.5px; margin: 0 0 0.75rem 0;`
+* Subtitle Paragraph: `font-size: 1rem (16px); color: #cbd5e1; max-width: 750px; line-height: 1.6;`
+
+### 4.3 Sticky Filter Sidebar Specs
+* Container: `background: #1e293b; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.08); padding: 1.5rem; position: sticky; top: 5.5rem;`
+* Header H3: `font-size: 1.1rem (17.6px); font-weight: 700; color: #f8fafc;`
+* Reset Action Button: `font-size: 0.8rem (12.8px); font-weight: 600; color: #818cf8;`
+* Form Labels: `font-size: 0.85rem (13.6px); font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem;`
+* Filter Input: `background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 8px; color: #ffffff; font-size: 0.9rem (14.4px); padding: 0.6rem 0.9rem;`
+* Category Filter Chips:
+  * Inactive Chip: `background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.06); color: #cbd5e1; font-size: 0.85rem; padding: 0.5rem 0.8rem; border-radius: 6px;`
+  * Active Chip: `background: #6366f1; color: #ffffff; font-weight: 600; border-color: #6366f1;`
+* Price Slider & Value:
+  * Range Slider: `accent-color: #6366f1; width: 100%;`
+  * Price Dynamic Display: `font-size: 0.9rem; font-weight: 700; color: #a855f7;`
+* AI Copilot Suggestion Box (`.copilot-tip-box`):
+  * Background: `linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15))`
+  * Border: `1px solid rgba(168, 85, 247, 0.3)`
+  * Header: `font-size: 0.85rem; font-weight: 700; color: #e0e7ff;`
+  * Body text: `font-size: 0.8rem; color: #94a3b8; line-height: 1.4;`
+  * Action Button: `background: #6366f1; color: white; font-size: 0.8rem; font-weight: 600; border-radius: 6px; padding: 0.5rem;`
+
+### 4.4 Product Card Grid Specs
+* Grid Layout: `display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem;`
+* Product Card (`.product-card`):
+  * Background: `#1e293b; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; overflow: hidden;`
+  * Hover Micro-Interaction: `transform: translateY(-4px); border-color: rgba(99, 102, 241, 0.4); box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.5);`
+* Card Image Wrapper:
+  * Height: `180px`, `background: #0f172a; padding: 1.25rem;`
+  * Image Hover: `transition: transform 0.3s; transform: scale(1.05);`
+* Stock Badge (`.badge-stock`):
+  * Font & Shape: `font-size: 0.7rem (11.2px); font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 9999px;`
+  * In Stock: `background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4);`
+  * Out of Stock: `background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4);`
+* Card Meta Bar:
+  * Brand: `font-size: 0.75rem; font-weight: 600; color: #818cf8; text-transform: uppercase;`
+  * Rating: `font-size: 0.75rem; font-weight: 600; color: #fbbf24;`
+* Title: `font-size: 1.05rem (16.8px); font-weight: 700; color: #ffffff; line-height: 1.35;`
+* Snippet Description: `font-size: 0.8rem (12.8px); color: #94a3b8; line-height: 1.4; line-clamp: 2;`
+* Price Row:
+  * Currency: `font-size: 0.95rem; font-weight: 700; color: #6366f1;`
+  * Price Value: `font-size: 1.35rem (21.6px); font-weight: 800; color: #ffffff;`
+  * Compare Checkbox: `font-size: 0.75rem; color: #cbd5e1;`
+* Card Action Buttons:
+  * Add to Cart: `background: #6366f1; color: white; font-size: 0.8rem; font-weight: 600; border-radius: 6px;`
+  * Ask Copilot: `background: linear-gradient(135deg, #a855f7, #ec4899); color: white; font-size: 0.8rem; font-weight: 600; border-radius: 6px;`
+  * Details Button: `background: rgba(255, 255, 255, 0.08); color: #e2e8f0; font-size: 0.8rem; font-weight: 600; border-radius: 6px;`
+
+---
+
+## 5. AI Shopping Copilot Multi-Agent Chat Panel
+
+Component: `CopilotComponent`  
+Files: [`src/app/components/copilot/copilot.component.html`](file:///c:/Users/skuma679/l0l3/E-commerce/frontend/src/app/components/copilot/copilot.component.html), [`src/app/components/copilot/copilot.component.css`](file:///c:/Users/skuma679/l0l3/E-commerce/frontend/src/app/components/copilot/copilot.component.css)
+
+### 5.1 Panel Dual Geometry Architecture
+* **Standard Floating Mode**:
+  * Position: `position: fixed; bottom: 2rem; right: 2rem; z-index: 2000;`
+  * Dimensions: `width: 480px; height: 640px;`
+  * Surface: `background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 16px; box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6);`
+* **Expanded Split Workspace Mode (`.copilot-panel.expanded`)**:
+  * Dimensions: `width: 720px; height: calc(100vh - 4rem); max-width: calc(100vw - 2.5rem);`
+  * Shadow Glow: `box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.75), 0 0 40px -10px rgba(99, 102, 241, 0.25);`
+
+### 5.2 Header & Agent Identity
+* Surface: `background: #1e293b; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding: 0.9rem 1.25rem;`
+* Agent Avatar: `width: 36px; height: 36px; background: linear-gradient(135deg, #6366f1, #a855f7); border-radius: 10px; font-size: 1.2rem;`
+* Pulse Indicator: `width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 6px #10b981;`
+* Header Title: `font-size: 1rem (16px); font-weight: 700; color: #ffffff;`
+* Tech Subtitle: `font-size: 0.7rem (11.2px); font-weight: 600; color: #a855f7;`
+
+### 5.3 Quick Suggested Prompts Ribbon
+* Surface: `background: rgba(30, 41, 59, 0.6); border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding: 0.5rem 1rem;`
+* Title: `font-size: 0.75rem; font-weight: 600; color: #94a3b8;`
+* Prompt Chip: `background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.3); color: #cbd5e1; font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 9999px;`
+* Chip Hover: `background: #6366f1; color: #ffffff;`
+
+### 5.4 Message Stream & Multi-Agent Badges
+* **User Message Bubble (`.user-bubble`)**:
+  * Shape: `border-radius: 14px 14px 2px 14px; padding: 0.75rem 1rem; max-width: 82%;`
+  * Colors: `background: #6366f1; color: #ffffff; font-size: 0.9rem (14.4px); line-height: 1.4;`
+  * Timestamp: `font-size: 0.65rem; color: rgba(255, 255, 255, 0.7);`
+* **Assistant Message Card (`.assistant-card`)**:
+  * Shape: `border-radius: 14px 14px 14px 2px; padding: 1rem; max-width: 95%;`
+  * Surface: `background: #1e293b; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);`
+* **Autonomous Agent Identity Badges**:
+  | Agent Role | Badge Class | Background | Color | Border |
+  | :--- | :--- | :--- | :--- | :--- |
+  | Personal Shopper | `.badge-shopper` | `rgba(59, 130, 246, 0.2)` | `#60a5fa` | `rgba(59, 130, 246, 0.4)` |
+  | Spec Comparison | `.badge-compare` | `rgba(168, 85, 247, 0.2)` | `#c084fc` | `rgba(168, 85, 247, 0.4)` |
+  | Deal Hunter | `.badge-deal` | `rgba(236, 72, 153, 0.2)` | `#f472b6` | `rgba(236, 72, 153, 0.4)` |
+  | Cart & Inventory | `.badge-cart` | `rgba(16, 185, 129, 0.2)` | `#34d399` | `rgba(16, 185, 129, 0.4)` |
+  | Order Tracker | `.badge-track` | `rgba(245, 158, 11, 0.2)` | `#fbbf24` | `rgba(245, 158, 11, 0.4)` |
+  | Order Cancellation | `.badge-cancel` | `rgba(239, 68, 68, 0.2)` | `#f87171` | `rgba(239, 68, 68, 0.4)` |
+  | Returns & Refunds | `.badge-return` | `rgba(14, 165, 233, 0.2)` | `#38bdf8` | `rgba(14, 165, 233, 0.4)` |
+  | Tech Diagnostics | `.badge-tech` | `rgba(139, 92, 246, 0.2)` | `#a78bfa` | `rgba(139, 92, 246, 0.4)` |
+* **Grounding Critic Verification Badge (`.critic-badge`)**:
+  * Verified (`.critic-verified`): `background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); font-size: 0.7rem; font-weight: 700;`
+  * Warning (`.critic-warning`): `background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); font-size: 0.7rem; font-weight: 700;`
+* **Routing Rationale Banner (`.routing-rationale`)**:
+  * Surface: `background: rgba(15, 23, 42, 0.5); border-left: 3px solid #6366f1; padding: 0.4rem 0.6rem; font-size: 0.75rem; color: #94a3b8;`
+  * Label: `color: #a5b4fc; font-weight: 600;`
+
+### 5.5 Markdown & Structured Content Specifications
+* **Message Body Text (`.msg-content`)**: `font-size: 0.9rem (14.4px); line-height: 1.55; color: #cbd5e1;`
+* **Markdown Headings**:
+  * H4 (`.md-h4`): `font-size: 0.95rem (15.2px); font-weight: 700; color: #f8fafc; margin: 1rem 0 0.4rem 0;`
+  * H5 (`.md-h5`): `font-size: 0.85rem (13.6px); font-weight: 600; color: #a5b4fc; margin: 0.8rem 0 0.3rem 0;`
+* **Markdown Comparison Table**:
+  * Wrapper (`.table-responsive`): `background: rgba(10, 15, 29, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; overflow-x: auto; margin: 0.85rem 0;`
+  * Table Header (`th`): `background: rgba(30, 41, 59, 0.85); color: #a5b4fc; font-size: 0.8rem; font-weight: 700; padding: 0.6rem 0.85rem; border-bottom: 1px solid rgba(255, 255, 255, 0.12);`
+  * Table Cell (`td`): `color: #e2e8f0; font-size: 0.8rem; padding: 0.55rem 0.85rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05);`
+  * Row Hover: `background: rgba(99, 102, 241, 0.05);`
+
+### 5.6 Specialized Inline AI Widgets
+* **Inline Product Recommendations (`.rec-card`)**:
+  * Container: `background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 8px; padding: 0.6rem;`
+  * Image: `height: 80px; object-fit: contain;`
+  * Title: `font-size: 0.8rem; font-weight: 600; color: #ffffff;`
+  * Price: `font-size: 0.85rem; font-weight: 700; color: #6366f1;`
+  * Add Button: `background: #6366f1; color: white; font-size: 0.75rem; font-weight: 600; border-radius: 4px; padding: 0.3rem;`
+* **Inline Deal & Coupon Breakdown (`.deal-card`)**:
+  * Container: `background: #0f172a; border: 1px solid rgba(236, 72, 153, 0.3); border-radius: 8px; padding: 0.75rem;`
+  * Header: `font-size: 0.8rem; font-weight: 700; color: #f472b6;`
+  * Coupon Pill: `background: rgba(16, 185, 129, 0.2); padding: 0.1rem 0.35rem; border-radius: 4px; font-weight: 700;`
+  * Final Price: `font-size: 0.95rem; font-weight: 700; color: #6366f1;`
+* **Human-In-The-Loop Payment Authorization Card (`.payment-auth-card`)**:
+  * Surface: `background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95)); border: 2px solid #6366f1; border-radius: 12px; padding: 1rem; box-shadow: 0 8px 24px rgba(99, 102, 241, 0.2);`
+  * Header Title: `font-size: 0.9rem; font-weight: 700; color: #a5b4fc;`
+  * Summary Ledger: `background: rgba(0, 0, 0, 0.25); border-radius: 8px; padding: 0.65rem 0.85rem; font-size: 0.8rem;`
+  * Total Payable Amount: `font-size: 0.95rem; font-weight: 700; color: #34d399;`
+  * Pay CTA Button (`.btn-authorize-pay`):
+    * Background: `linear-gradient(135deg, #10b981, #059669)`
+    * Box-shadow: `0 4px 12px rgba(16, 185, 129, 0.3)`
+    * Typography: `font-size: 0.85rem; font-weight: 700; color: #ffffff;`
+    * Hover: `background: linear-gradient(135deg, #059669, #047857); transform: translateY(-1px); box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);`
+
+### 5.7 Agent Telemetry & Citations Flyout (`.trace-drawer`)
+* Position: `position: absolute; top: 0; right: 485px; width: 380px; height: 100%; border-radius: 16px; background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.12);`
+* Header: `font-size: 0.85rem; font-weight: 700; color: #ffffff;`
+* Span Execution Card (`.span-card`):
+  * Surface: `background: #1e293b; border-radius: 6px; padding: 0.6rem; font-size: 0.75rem;`
+  * Agent Name Tag: `color: #38bdf8; font-weight: 700;`
+  * Latency Duration: `color: #a855f7;`
+  * Code/Details: `font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #cbd5e1;`
+* Citation Card (`.citation-card`):
+  * Source Tag: `color: #fbbf24; font-weight: 600; font-size: 0.75rem;`
+  * Chunk Content: `color: #cbd5e1; font-size: 0.75rem; line-height: 1.35;`
+
+### 5.8 Input & Chat Composer
+* Composer Bar: `background: #1e293b; border-top: 1px solid rgba(255, 255, 255, 0.08); padding: 0.75rem 1rem;`
+* Input Wrapper: `background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 10px; padding: 0.4rem 0.6rem;`
+* Textarea: `font-size: 0.85rem (13.6px); color: #ffffff; resize: none; border: none;`
+* Send CTA Button: `width: 32px; height: 32px; background: #6366f1; border-radius: 8px; font-size: 0.9rem; color: #ffffff;`
+
+---
+
+## 6. Shopping Cart Drawer
+
+Component: `CartDrawerComponent`  
+Files: [`src/app/components/cart-drawer/cart-drawer.component.html`](file:///c:/Users/skuma679/l0l3/E-commerce/frontend/src/app/components/cart-drawer/cart-drawer.component.html), [`src/app/components/cart-drawer/cart-drawer.component.css`](file:///c:/Users/skuma679/l0l3/E-commerce/frontend/src/app/components/cart-drawer/cart-drawer.component.css)
+
+### 6.1 Drawer Backdrop & Transition
+* Backdrop: `position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(4px); z-index: 2500; animation: fadeIn 0.2s ease-out;`
+* Panel: `background: #1e293b; width: 100%; max-width: 440px; height: 100%; border-left: 1px solid rgba(255, 255, 255, 0.1); box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5); animation: slideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);`
+
+### 6.2 Header Specs
+* Padding: `1.25rem 1.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08);`
+* Title H2: `font-size: 1.25rem (20px); font-weight: 700; color: #f8fafc;`
+* Count Tag: `background: rgba(99, 102, 241, 0.2); color: #a5b4fc; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 9999px;`
+* Close Button: `font-size: 1.5rem; color: #94a3b8; hover color: #ffffff;`
+
+### 6.3 Cart Item Row Specs
+* Item Card (`.cart-item`): `background: #0f172a; padding: 0.75rem; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.05);`
+* Thumbnail: `width: 60px; height: 60px; background: #1e293b; border-radius: 6px; padding: 0.25rem; object-fit: contain;`
+* Name: `font-size: 0.9rem (14.4px); font-weight: 600; color: #f1f5f9;`
+* Unit Price: `font-size: 0.8rem (12.8px); color: #94a3b8;`
+* Quantity Picker:
+  * Capsule: `background: #1e293b; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.1);`
+  * Increment/Decrement Buttons: `font-size: 0.85rem; font-weight: 700; color: #cbd5e1; padding: 0.2rem 0.6rem;`
+  * Quantity Display: `font-size: 0.85rem; font-weight: 600; padding: 0 0.4rem;`
+* Remove Button: `font-size: 0.75rem; color: #f87171;`
+* Line Total: `font-size: 0.95rem (15.2px); font-weight: 700; color: #6366f1;`
+
+### 6.4 Footer & Financial Ledger
+* Footer Surface: `background: #0f172a; border-top: 1px solid rgba(255, 255, 255, 0.08); padding: 1.25rem 1.5rem;`
+* Coupon Input: `background: #1e293b; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 6px; color: white; font-size: 0.85rem; text-transform: uppercase;`
+* Apply Button: `background: rgba(99, 102, 241, 0.3); color: #a5b4fc; font-size: 0.8rem; font-weight: 600; border-radius: 6px; padding: 0.5rem 0.9rem;`
+* Coupon Chips: `background: rgba(255, 255, 255, 0.05); border: 1px dashed rgba(255, 255, 255, 0.2); color: #cbd5e1; font-size: 0.7rem; border-radius: 4px;`
+* Summary Row: `font-size: 0.85rem (13.6px); color: #94a3b8;`
+* Discount Row: `color: #34d399; font-weight: 600;`
+* Free Shipping Tag: `color: #34d399; font-weight: 700;`
+* Total Row: `font-size: 1.05rem (16.8px); color: #f1f5f9; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 0.6rem;`
+* Total Amount: `font-size: 1.3rem (20.8px); font-weight: 800; color: #6366f1;`
+* Checkout Button (`.btn-checkout`):
+  * Background: `linear-gradient(135deg, #6366f1, #a855f7);`
+  * Shape: `border-radius: 8px; padding: 0.85rem; width: 100%;`
+  * Typography: `font-size: 1rem (16px); font-weight: 700; color: #ffffff;`
+  * Shadow: `box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);`
+
+---
+
+## 7. Orders & Real-Time Tracking Timeline
+
+Component: `OrderHistoryComponent`  
+Files: [`src/app/components/order-history/order-history.component.html`](file:///c:/Users/skuma679/l0l3/E-commerce/frontend/src/app/components/order-history/order-history.component.html), [`src/app/components/order-history/order-history.component.css`](file:///c:/Users/skuma679/l0l3/E-commerce/frontend/src/app/components/order-history/order-history.component.css)
+
+### 7.1 Container & Header
+* Container: `max-width: 1000px; margin: 0 auto; padding: 1.5rem;`
+* Header H2: `font-size: 1.8rem (28.8px); font-weight: 800; margin: 0 0 0.5rem 0;`
+* Subtitle P: `font-size: 0.9rem (14.4px); color: #94a3b8;`
+
+### 7.2 Order Card Specifications
+* Card Surface: `background: #1e293b; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);`
+* Order Top Bar: `background: #0f172a; border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding: 1.25rem 1.5rem;`
+* Order Number: `font-size: 1.1rem (17.6px); font-weight: 700; color: #ffffff;`
+* Order Date: `font-size: 0.85rem (13.6px); color: #94a3b8;`
+* Order Lifecycle Status Badges:
+  | Status | Class | Background | Color | Border |
+  | :--- | :--- | :--- | :--- | :--- |
+  | Placed | `.status-placed` | `rgba(59, 130, 246, 0.2)` | `#60a5fa` | `rgba(59, 130, 246, 0.4)` |
+  | Processing | `.status-processing` | `rgba(245, 158, 11, 0.2)` | `#fbbf24` | `rgba(245, 158, 11, 0.4)` |
+  | Shipped | `.status-shipped` | `rgba(168, 85, 247, 0.2)` | `#c084fc` | `rgba(168, 85, 247, 0.4)` |
+  | Delivered | `.status-delivered` | `rgba(16, 185, 129, 0.2)` | `#34d399` | `rgba(16, 185, 129, 0.4)` |
+  | Cancelled | `.status-cancelled` | `rgba(239, 68, 68, 0.2)` | `#f87171` | `rgba(239, 68, 68, 0.4)` |
+
+### 7.3 Items & Financial Summary
+* Item Name: `font-size: 0.9rem; color: #cbd5e1;`
+* Item Quantity: `font-size: 0.9rem; color: #94a3b8;`
+* Item Price: `font-size: 0.9rem; font-weight: 600; color: #ffffff;`
+* Total Label: `font-size: 0.9rem; color: #94a3b8;`
+* Total Value: `font-size: 1.2rem (19.2px); font-weight: 800; color: #6366f1;`
+
+### 7.4 Action Bar Specs
+* Action Buttons (`.btn-track`, `.btn-copilot-action`, `.btn-cancel`, `.btn-return`):
+  * Padding: `0.45rem 0.9rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600;`
+  * Track Button: `background: rgba(99, 102, 241, 0.2); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.4);`
+  * Copilot Action Button: `background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2)); color: #e879f9; border: 1px solid rgba(168, 85, 247, 0.4);`
+  * Cancel Button: `background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3);`
+  * Return Button: `background: rgba(14, 165, 233, 0.15); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.3);`
+
+### 7.5 Real-Time Carrier Timeline View
+* Container: `background: #0f172a; border-top: 1px solid rgba(255, 255, 255, 0.08); padding: 1.25rem 1.5rem;`
+* Carrier Code: `background: #1e293b; padding: 0.15rem 0.4rem; border-radius: 4px; color: #38bdf8; font-family: monospace;`
+* Timeline Vertical Spine: `width: 2px; background: rgba(99, 102, 241, 0.4); position: absolute; left: 5px;`
+* Timeline Node Dot: `width: 12px; height: 12px; border-radius: 50%; background: #6366f1; box-shadow: 0 0 8px #6366f1;`
+* Event Status: `font-size: 0.85rem; font-weight: 700; color: #f1f5f9;`
+* Event Location: `font-size: 0.75rem; color: #38bdf8;`
+* Event Description: `font-size: 0.85rem; color: #94a3b8;`
+* Event Timestamp: `font-size: 0.7rem; color: #64748b;`
+
+---
+
+## 8. JWT Authentication Modal
+
+Component: `AuthModalComponent`  
+Files: [`src/app/components/auth-modal/auth-modal.component.html`](file:///c:/Users/skuma679/l0l3/E-commerce/frontend/src/app/components/auth-modal/auth-modal.component.html), [`src/app/components/auth-modal/auth-modal.component.css`](file:///c:/Users/skuma679/l0l3/E-commerce/frontend/src/app/components/auth-modal/auth-modal.component.css)
+
+### 8.1 Modal Layout & Animation
+* Backdrop: `position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(6px); z-index: 1000; animation: fadeIn 0.2s ease-out;`
+* Modal Card: `background: #111827; border: 1px solid #1f2937; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6); border-radius: 1rem (16px); width: 100%; max-width: 460px; animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);`
+
+### 8.2 Header & Brand Specs
+* Header Surface: `background: #182234; border-bottom: 1px solid #1f2937; padding: 1.25rem 1.5rem;`
+* Brand Icon: `width: 42px; height: 42px; background: #3b82f6; border-radius: 0.5rem; font-size: 1.75rem;`
+* Title H3: `font-size: 1.15rem (18.4px); font-weight: 700; color: #f9fafb;`
+* Subtitle P: `font-size: 0.75rem (12px); color: #9ca3af;`
+
+### 8.3 Mode Tabs (Login vs Register)
+* Container: `background: #0f172a; border-bottom: 1px solid #1f2937;`
+* Inactive Tab: `font-size: 0.875rem (14px); font-weight: 600; color: #9ca3af; padding: 0.85rem; border-bottom: 2px solid transparent;`
+* Active Tab: `color: #60a5fa; border-bottom: 2px solid #3b82f6; background: #111827;`
+
+### 8.4 Form Controls & 1-Click Autofill
+* Input Labels: `font-size: 0.8rem (12.8px); font-weight: 600; color: #d1d5db;`
+* Form Inputs: `background: #0b0f19; border: 1px solid #374151; border-radius: 0.5rem; color: #f9fafb; font-size: 0.9rem; padding: 0.65rem 0.85rem;`
+* Input Focus Ring: `border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);`
+* 1-Click Demo Box: `background: #0d1525; border: 1px dashed #2563eb40; padding: 0.75rem; border-radius: 0.5rem;`
+* Demo Chip: `background: #1e293b; border: 1px solid #334155; color: #cbd5e1; font-size: 0.75rem; padding: 0.35rem 0.65rem; border-radius: 0.375rem;`
+* Submit CTA Button: `background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 0.5rem; color: #ffffff; font-weight: 600; font-size: 0.95rem; padding: 0.8rem; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);`
+
+---
+
+## 9. Product Detail & Specification Modal
+
+Component: `ProductDetailModalComponent`  
+Files: [`src/app/components/product-detail-modal/product-detail-modal.component.html`](file:///c:/Users/skuma679/l0l3/E-commerce/frontend/src/app/components/product-detail-modal/product-detail-modal.component.html), [`src/app/components/product-detail-modal/product-detail-modal.component.css`](file:///c:/Users/skuma679/l0l3/E-commerce/frontend/src/app/components/product-detail-modal/product-detail-modal.component.css)
+
+### 9.1 Backdrop & Dimensions
+* Backdrop: `position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px); z-index: 2000;`
+* Modal Card: `background: #1e293b; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 16px; max-width: 900px; max-height: 90vh; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);`
+* 2-Column Grid: `grid-template-columns: 1fr 1.2fr; gap: 2rem; padding: 2rem;` (Collapses to `1fr` on screens `<= 768px`).
+
+### 9.2 Media & Header Elements
+* Media Surface: `background: #0f172a; border-radius: 12px; padding: 1rem; border: 1px solid rgba(255, 255, 255, 0.05);`
+* Brand Tag: `position: absolute; top: 1rem; left: 1rem; background: rgba(99, 102, 241, 0.85); font-size: 0.75rem; font-weight: 700; border-radius: 6px; padding: 0.25rem 0.6rem;`
+* Category Pill: `font-size: 0.75rem; font-weight: 600; color: #a855f7; text-transform: uppercase;`
+* Title H2: `font-size: 1.5rem (24px); font-weight: 700; color: #ffffff;`
+* Price Value: `font-size: 1.8rem (28.8px); font-weight: 800; color: #6366f1;`
+* Description P: `font-size: 0.95rem (15.2px); color: #cbd5e1; line-height: 1.6;`
+
+### 9.3 Specifications Table Specs
+* Table Container: `background: #0f172a; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05); overflow: hidden;`
+* Spec Row: `display: flex; justify-content: space-between; padding: 0.6rem 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 0.85rem;`
+* Spec Key: `color: #94a3b8; text-transform: capitalize;`
+* Spec Value: `color: #f1f5f9; font-weight: 500;`
+
+### 9.4 Dual Action CTA Buttons
+* Add to Cart CTA: `background: #6366f1; color: white; font-size: 0.95rem; font-weight: 600; border-radius: 8px; padding: 0.75rem 1.2rem;`
+* Ask Copilot CTA: `background: linear-gradient(135deg, #a855f7, #ec4899); color: white; font-size: 0.95rem; font-weight: 600; border-radius: 8px; padding: 0.75rem 1.2rem;`
+
+---
+
+## 10. Product Comparison Dock & Matrix
+
+Component: `ProductCompareComponent`  
+Files: [`src/app/components/product-compare/product-compare.component.html`](file:///c:/Users/skuma679/l0l3/E-commerce/frontend/src/app/components/product-compare/product-compare.component.html), [`src/app/components/product-compare/product-compare.component.css`](file:///c:/Users/skuma679/l0l3/E-commerce/frontend/src/app/components/product-compare/product-compare.component.css)
+
+### 10.1 Container & Header
+* Container: `background: #1e293b; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); padding: 1.5rem; margin: 1.5rem 0; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);`
+* Header Title H2: `font-size: 1.35rem (21.6px); font-weight: 700; color: #ffffff;`
+* Subtitle P: `font-size: 0.85rem (13.6px); color: #94a3b8;`
+* Copilot Compare CTA: `background: linear-gradient(135deg, #a855f7, #6366f1); color: white; font-size: 0.9rem; font-weight: 600; border-radius: 8px; padding: 0.6rem 1.2rem;`
+* Clear Compare CTA: `background: transparent; color: #94a3b8; border: 1px solid rgba(255, 255, 255, 0.1); font-size: 0.85rem; border-radius: 8px; padding: 0.6rem 1rem;`
+
+### 10.2 Comparison Table Matrix Specs
+* Table Container: `background: #0f172a; width: 100%; border-collapse: collapse;`
+* Feature Label Column (`.feature-col`): `width: 180px; min-width: 160px; background: rgba(30, 41, 59, 0.5); color: #94a3b8; font-weight: 600; font-size: 0.9rem;`
+* Product Column (`.product-col`): `min-width: 220px; vertical-align: top; padding: 1rem; border: 1px solid rgba(255, 255, 255, 0.06);`
+* Product Image: `width: 80px; height: 80px; background: #1e293b; border-radius: 6px; padding: 0.25rem; object-fit: contain;`
+* Product Name: `font-size: 0.95rem; font-weight: 600; color: #ffffff;`
+* Product Price: `font-size: 1.1rem; font-weight: 700; color: #6366f1;`
+* Table Add to Cart CTA: `background: #6366f1; color: white; font-size: 0.85rem; font-weight: 600; border-radius: 6px; padding: 0.45rem 0.9rem;`
+
+---
+
+## 11. Design Token Reference Matrix
+
+### 11.1 Typography Hierarchy Cheatsheet
+| Level | Font Size | Weight | Line Height | Color | Typical Usage |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Hero Display H1** | `2.2rem` (35.2px) | `800` | `1.2` | `#ffffff` | Storefront Hero Banner |
+| **Section Title H2** | `1.8rem` (28.8px) | `800` | `1.25` | `#ffffff` | Order History Page Header |
+| **Modal Title H2** | `1.5rem` (24.0px) | `700` | `1.3` | `#ffffff` | Product Detail Modal Header |
+| **Drawer Header H2**| `1.25rem` (20.0px) | `700` | `1.3` | `#f8fafc` | Cart Drawer Title |
+| **Brand Title** | `1.25rem` (20.0px) | `700` | `1.2` | Gradient | Navbar Brand Name |
+| **Card Heading H3** | `1.10rem` (17.6px) | `700` | `1.3` | `#f8fafc` | Sidebar Header, Order Card Top |
+| **Product Card Title**| `1.05rem` (16.8px) | `700` | `1.35` | `#ffffff` | Product Card Heading |
+| **Copilot Header H3**| `1.00rem` (16.0px) | `700` | `1.3` | `#ffffff` | Copilot Floating Header |
+| **Hero Subtitle** | `1.00rem` (16.0px) | `400` | `1.6` | `#cbd5e1` | Hero Description Copy |
+| **Body Standard** | `0.90rem` (14.4px) | `400` | `1.55` | `#cbd5e1` | Chat Messages, Product Description |
+| **Form Inputs** | `0.90rem` (14.4px) | `400` | `1.4` | `#f8fafc` | Search Filter, Auth Modal Inputs |
+| **Navigation Pills** | `0.85rem` (13.6px) | `600` | `1.0` | `#94a3b8` / `#ffffff` | Sub-nav Switcher, Filter Chips |
+| **Table Headings** | `0.80rem` (12.8px) | `700` | `1.2` | `#a5b4fc` | Markdown Spec Table Th |
+| **Table Cells** | `0.80rem` (12.8px) | `400` | `1.3` | `#e2e8f0` | Markdown Spec Table Td |
+| **Metadata & Subtitles**| `0.75rem` (12.0px) | `600` | `1.2` | `#94a3b8` | Rating, Brand Labels, Prompt Chips |
+| **Telemetry / Code** | `0.70rem` (11.2px) | `500` (Mono)| `1.4` | `#cbd5e1` | Trace Drawer JSON Spans |
+| **Status Badges** | `0.65rem - 0.75rem`| `700` | `1.0` | Status colors | Agent Badges, Stock Status, Cart Count |
+
+### 11.2 Color & Status Palette Matrix
+| Color Family | Hex Value | Semantic Role |
+| :--- | :--- | :--- |
+| **Obsidian Canvas** | `#070a12` | Root Canvas Background |
+| **Primary Surface** | `#0f172a` | Containers, Input Fields, Sub-surfaces |
+| **Elevated Surface** | `#1e293b` | Cards, Drawers, Modals, Headers |
+| **AI Primary** | `#6366f1` | Indigo Brand Focus, Primary CTA, User Bubbles |
+| **AI Secondary** | `#8b5cf6` | Violet AI Gradient Midpoint |
+| **AI Tertiary** | `#a855f7` | Purple AI Copilot Accents & Glow |
+| **AI Rose** | `#ec4899` / `#f43f5e` | Magenta Cart Counter, Deal Hunter Agent |
+| **AI Cyan** | `#06b6d4` / `#38bdf8` | Diagnostic Agent, Tracking Location, Avatar |
+| **Emerald Grounded**| `#10b981` / `#34d399` | Grounding Critic Verified, HITL Payment CTA |
+| **Amber Proposed** | `#f59e0b` / `#fbbf24` | HITL Action Proposal, Processing Orders |
+| **Rose Error** | `#ef4444` / `#f87171` | Out of Stock, Order Cancel, Input Validation |
