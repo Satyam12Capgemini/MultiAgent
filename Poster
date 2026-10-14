@@ -1,0 +1,18 @@
+A professional, ultra-high-definition enterprise tech infographic poster titled "AI Shopping Copilot & Multi-Agent E-Commerce Platform" in bold modern futuristic typography. 
+Top Header: Dark glowing cyber background with a futuristic illuminated digital mall storefront in the backdrop. Headline: "AI Shopping Copilot & Multi-Agent Platform". Sub-headline: "DISCOVER SMARTER. BUY WITH CONFIDENCE. ZERO-HALLUCINATION COMMERCE." Below the subtitle is a short paragraph: "An enterprise-grade LangGraph Multi-Agent E-Commerce platform featuring 9 specialist agents, ChromaDB RAG, deterministic Decimal financial safety, and an Angular 17+ storefront." Tech pills along the header: Angular 17, FastAPI, LangGraph, ChromaDB, SQLAlchemy.
+Top Right Hero Mascot: A cute, ultra-detailed 3D white and cyan robotic AI shopping assistant character floating cheerfully, holding a glowing neon holographic shield with a shopping cart and rupee symbol icon. Floating around the robot are glowing 3D e-commerce elements: floating parcel boxes with barcodes, discount coupon tags with "%" signs, and spec comparison charts. Floating HUD badge in top-right: "✓ 9 Specialist Agents", "✓ Deterministic Pricing", "✓ ChromaDB RAG", "✓ Human-in-the-Loop".
+Middle Section: "Core Capabilities" title. A clean 2x2 grid of modern rounded cards with glowing borders:
+1. "Zero-Hallucination Grounding" (blue shield icon): Factual price verification against relational database records with bounded Critic retries.
+2. "9 Specialist Agent Swarm" (purple robot icon): Personal shopper, spec comparison matrix, deal finder, inventory, and diagnostics.
+3. "Deterministic Financial Math" (cyan calculator icon): Strict Python Decimal arithmetic for subtotal, coupons, and refunds. Zero price hallucinations.
+4. "Role-Based HITL Governance" (orange padlock icon): Auto-refunds up to ₹500 INR, human approval for high-value claims, JWT identity isolation.
+Workflow Section: "System Workflow | From Customer Intent to Verified Purchase". A 5-step horizontal flow with glowing connecting arrows:
+1. User / Voice & Chat: Natural language product search and comparison prompt.
+2. Angular 17 SPA (:4200): Graphite & Aqua glassmorphism storefront with copilot drawer.
+3. FastAPI Gateway (:8000): JWT authentication, thread-safe session context, LangGraph orchestration.
+4. LangGraph Agent Swarm & ChromaDB: Multi-agent pipeline routing, spec matrix, ChromaDB vector retrieval (products_kb, tech_manuals, policy_kb).
+5. Grounding Critic & Relational DB: Deterministic price verification, ACID cart & order writes, safe fallback.
+Bottom Section:
+Left side: "Tech Stack" grid with 9 neat cards: Angular 17, TypeScript, Tailwind CSS, Python + FastAPI, LangGraph, SQLAlchemy, ChromaDB, Pydantic v2, Capgemini GenAI.
+Right side: "Key Highlights" list with vibrant green checkmarks: 100% Price Grounding, Multi-SKU Spec Comparison, Pessimistic Stock Locking, Enterprise HITL Security, Real-Time Action Proposals.
+Bottom Footer Banner: Deep navy blue with glowing neon aqua borders. Large bold text: "ACCURATE. | CONTEXT-AWARE. | ZERO-HALLUCINATION." with subtitle: "Next-Gen Enterprise E-Commerce Platform powered by LangGraph, FastAPI & ChromaDB". Clean vector graphic layout, 8k resolution, crisp typography, octane render, trending on Behance.
